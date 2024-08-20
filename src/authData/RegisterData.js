@@ -1,0 +1,22 @@
+export const registerData =[
+    {
+        id:"name",
+        label:"Name"
+    },
+    {
+        id:"email",
+        label:"Email"
+    },
+    {
+        id:"password",
+        label:"Password"
+    },
+    {
+        id:"rePassword",
+        label:"rePassword"
+    },
+    {
+        id:"phone",
+        label:"Phone"
+    },
+]
