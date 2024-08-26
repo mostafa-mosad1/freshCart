@@ -5,6 +5,7 @@ import toast from "react-hot-toast";
 export const CartContext = createContext();
 
 function CartContextProvider({ children }) {
+  const [tokenStatus, setTokenStatus] = useState(false);
   const headers = {
     token: localStorage.getItem("Token"),
   };
@@ -13,7 +14,7 @@ function CartContextProvider({ children }) {
 
   const addToCart = async (id) => {
     try {
-        setIsLoading(true)
+      setIsLoading(true);
       const res = await axiosBaseUrl.post(
         "/cart",
         {
@@ -21,116 +22,121 @@ function CartContextProvider({ children }) {
         },
         { headers }
       );
-    //   console.log(res);
+      //   console.log(res);
       setCart(res.data);
 
       toast.success(res.data.message);
     } catch (err) {
       console.log(err);
       toast.error(err.response.data.message);
-    } finally{
-        setIsLoading(false)
+    } finally {
+      setIsLoading(false);
     }
   };
   const getCart = async () => {
     try {
-        setIsLoading(true)
-      const res = await axiosBaseUrl.get(
-        "/cart",
-        { headers }
-      );
+      setIsLoading(true);
+      const res = await axiosBaseUrl.get("/cart", { headers });
       // console.log(res.data);
       setCart(res.data);
-
     } catch (err) {
       console.log(err);
     } finally {
-        setIsLoading(false)
+      setIsLoading(false);
     }
   };
-  const quantity = async (id,number) => {
+  const quantity = async (id, number) => {
     try {
-        setIsLoading(true)
+      setIsLoading(true);
       const res = await axiosBaseUrl.put(
         `/cart/${id}`,
         {
-            "count": number
+          count: number,
         },
         { headers }
       );
-    //   console.log(res.data);
+      //   console.log(res.data);
       setCart(res.data);
-
     } catch (err) {
       console.log(err);
     } finally {
-        setIsLoading(false)
+      setIsLoading(false);
     }
   };
   const Checkout = async (data) => {
     try {
-        setIsLoading(true)
+      setIsLoading(true);
       const res = await axiosBaseUrl.post(
         `/orders/checkout-session/${cart.data._id}?url=http://localhost:5173`,
         {
-            "shippingAddress":data
+          shippingAddress: data,
         },
         { headers }
       );
-      console.log(res)
-    window.location.href = res.data.session.url;
-
+      console.log(res);
+      window.location.href = res.data.session.url;
     } catch (err) {
       console.log(err);
     } finally {
-        setIsLoading(false)
+      setIsLoading(false);
     }
-};
-const removeProduct = async (id) => {
-  try {
-      setIsLoading(true)
-    const res = await axiosBaseUrl.delete(
-      `/cart/${id}`,
-      { headers }
-    );
-  //   console.log(res.data);
-    setCart(res.data);
+  };
+  const removeProduct = async (id) => {
+    try {
+      setIsLoading(true);
+      const res = await axiosBaseUrl.delete(`/cart/${id}`, { headers });
+      //   console.log(res.data);
+      setCart(res.data);
+    } catch (err) {
+      console.log(err);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+  const clearCart = async () => {
+    try {
+      setIsLoading(true);
+      const res = await axiosBaseUrl.delete(`/cart`, { headers });
+      console.log(res);
+      setCart(null);
+    } catch (err) {
+      console.log(err);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
-  } catch (err) {
-    console.log(err);
-  } finally {
-      setIsLoading(false)
-  }
-};
-const clearCart = async () => {
-  try {
-      setIsLoading(true)
-    const res = await axiosBaseUrl.delete(
-      `/cart`,
-      { headers }
-    );
-  console.log(res)
-    setCart(null);
+  useEffect(() => {
+    if (localStorage.getItem("Token")) {
+      setTokenStatus(true);
+    } else {
+      setTokenStatus(false);
+      
+    }
 
-  } catch (err) {
-    console.log(err);
-  } finally {
-      setIsLoading(false)
-  }
-};
+    if (tokenStatus) {
+      getCart();
+    }
+  }, [tokenStatus]);
 
-  useEffect(()=>{
-    // getCart();
-    // console.log("token")
-    {localStorage.getItem("Token") && getCart()}
-
-
-    
-
-  },[])
+  
+  console.log(tokenStatus)
 
   return (
-    <CartContext.Provider value={{ cart, setCart, addToCart, getCart ,isLoading,quantity ,removeProduct,Checkout,clearCart}}>
+    <CartContext.Provider
+      value={{
+        cart,
+        setCart,
+        addToCart,
+        getCart,
+        isLoading,
+        quantity,
+        setTokenStatus,
+        removeProduct,
+        Checkout,
+        clearCart,
+      }}
+    >
       {children}
     </CartContext.Provider>
   );

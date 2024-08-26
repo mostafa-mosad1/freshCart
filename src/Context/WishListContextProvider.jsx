@@ -60,7 +60,9 @@ function WishListContextProvider({ children }) {
     }
   };
   useEffect(() => {
-    GetWishList();
+    if( localStorage.getItem("Token")){
+      GetWishList();
+    }
   }, []);
   return (
     <WishListContext.Provider

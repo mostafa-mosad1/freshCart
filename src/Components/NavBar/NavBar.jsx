@@ -7,7 +7,7 @@ import { CartContext } from "../../Context/CartContextProvider";
 function Navbar() {
   const navgate = useNavigate();
   const { token, setToken } = useContext(TokenContext);
-  const { cart } = useContext(CartContext);
+  const { cart, setTokenStatus } = useContext(CartContext);
   let [open, setOpen] = useState(false);
   let [heightNav, setHeightNav] = useState("p-[15px]");
 
@@ -25,7 +25,8 @@ function Navbar() {
     localStorage.removeItem("Token");
     navgate("/");
     setToken(null);
-    cart.numOfCartItems = " ";
+    cart.numOfCartItems = 0;
+    setTokenStatus(false);
   };
 
   return (
@@ -47,14 +48,16 @@ function Navbar() {
 
           <ul className=" lg:flex flex-row  hidden ">
             <div className="icons text-black flex space-x-2 text-lg">
-              <Link to={"cart"}>
-                <li className="mx-4 text-xl font-semibold text-mainColor relative">
-                  <p className="text-3xl font-semibold text-red-500 absolute -top-6 -right-2">
-                    {cart?.numOfCartItems}
-                  </p>
-                  <ShoppingCart className="text-4xl size-8" />
-                </li>
-              </Link>
+              {token && (
+                <Link to={"cart"}>
+                  <li className="mx-4 text-xl font-semibold text-mainColor relative">
+                    <p className="text-3xl font-semibold text-red-500 absolute -top-6 -right-2">
+                      {cart?.numOfCartItems}
+                    </p>
+                    <ShoppingCart className="text-4xl size-8" />
+                  </li>
+                </Link>
+              )}
               <li>
                 <i className="fa-brands fa-facebook"></i>
               </li>

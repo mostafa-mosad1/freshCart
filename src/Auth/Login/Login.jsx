@@ -16,7 +16,7 @@ function Login() {
   const { setToken } = useContext(TokenContext);
   const { GetWishList } = useContext(WishListContext);
 
-  const { getCart } = useContext(CartContext);
+  const { setTokenStatus } = useContext(CartContext);
 
   const navgate = useNavigate();
   const schema = yup.object({
@@ -42,8 +42,10 @@ function Login() {
       localStorage.setItem("Token", data.token);
       navgate("/home");
       setToken(data.token);
-      getCart();
-      GetWishList();
+      if(data.message =="success"){
+        setTokenStatus(true)
+      }
+     console.log(data)
       toast.success(data.message, {
         duration: 4000,
         position: "top-center",
