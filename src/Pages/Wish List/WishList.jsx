@@ -25,12 +25,12 @@ function WishList() {
                 speedMultiplier={1}
               />
             </div>
-          ) : allWishLList.length != 0 &&
+          ) : allWishLList?.length != 0 &&
           allWishLList != undefined ?(
             allWishLList?.map((element) => (
               <div
                 key={element.id}
-                className="card border-b-2 border-white pb-8  mx-4  my-4 flex justify-between  flex-wrap"
+                className="card border-b-2 border-white pb-8  mx-4  my-4 flex justify-between space-y-4 lg:space-y-0 items-center flex-wrap"
               >
                 <div className=" flex space-x-4  items-center">
                   <img
@@ -56,15 +56,16 @@ function WishList() {
                         <i className="fa-solid fa-trash"></i>
                       </Button>
                     </div>
-                    <Button
+                   
+                  </div>
+                </div>
+                <Button
                       onClick={() => {
                         addToCart(element.id);
                       }}
                       name={"add to  cart"}
-                      className={"border-mainColor border-[2px] text-sm me-4"}
+                      className={"border-mainColor h-fit w-fit border-[2px] text-sm me-4"}
                     />
-                  </div>
-                </div>
               </div>
             ))
           ):<h2 className="text-center text-2xl font-semibold my-20">
