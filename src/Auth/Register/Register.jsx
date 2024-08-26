@@ -20,8 +20,14 @@ function Register() {
       .required("Name is required")
       .max(15, "max character is 15")
       .min(5, "min character is 5"),
-    email: yup.string().required("email is required").email("not vaild email"),
-    password: yup.string().required(),
+      email: yup
+      .string()
+      .email("Enter Valid E-mail")
+      .required("Email is required"),
+    password: yup
+      .string()
+      .matches(/^[A-Z]{1}\w{5,15}$/, "Ex:(Ahmed123)")
+      .required("Password is required"),
     rePassword: yup
       .string()
       .required()
@@ -56,6 +62,7 @@ function Register() {
   const allInputs = registerData.map((element, index) => (
     <div key={index}>
       <FloatingLabel
+       type={element.type}
         {...register(element.id)}
         variant="filled"
         label={element.label}

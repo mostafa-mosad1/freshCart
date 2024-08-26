@@ -2,11 +2,13 @@ export const LoginData =[
     
     {
         id:"email",
-        label:"Email"
+        label:"Email",
+        type:"text"
     },
     {
         id:"password",
-        label:"Password"
+        label:"Password",
+        type:"password"
     },
   
 ]

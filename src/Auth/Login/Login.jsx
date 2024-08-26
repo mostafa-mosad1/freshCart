@@ -20,8 +20,14 @@ function Login() {
 
   const navgate = useNavigate();
   const schema = yup.object({
-    email: yup.string().required("email is required").email("not vaild email"),
-    password: yup.string().required(),
+    email: yup
+      .string()
+      .email("Enter Valid E-mail")
+      .required("Email is required"),
+    password: yup
+      .string()
+      .matches(/^[A-Z]{1}\w{5,15}$/, "Ex:(Ahmed123)")
+      .required("Password is required"),
   });
 
   const {
@@ -42,7 +48,6 @@ function Login() {
         duration: 4000,
         position: "top-center",
       });
-     
     } catch (err) {
       console.log(err);
       toast.error(err?.response.data.message, {
@@ -54,6 +59,7 @@ function Login() {
   const allInputs = LoginData.map((element, index) => (
     <div key={index}>
       <FloatingLabel
+      type={element.type}
         {...register(element.id)}
         variant="filled"
         label={element.label}
@@ -61,8 +67,6 @@ function Login() {
       <InputErrorMessage msg={errors[element.id]?.message} />
     </div>
   ));
-
- 
 
   return (
     <>
