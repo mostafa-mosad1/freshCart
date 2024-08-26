@@ -4,10 +4,12 @@ import logo from "../../assets/images/freshcart-logo.svg";
 import { TokenContext } from "../../Context/TokenContext";
 import { ShoppingCart } from "lucide-react";
 import { CartContext } from "../../Context/CartContextProvider";
+import { WishListContext } from './../../Context/WishListContextProvider';
 function Navbar() {
   const navgate = useNavigate();
   const { token, setToken } = useContext(TokenContext);
   const { cart, setTokenStatus } = useContext(CartContext);
+  const { setTokenWish } = useContext(WishListContext);
   let [open, setOpen] = useState(false);
   let [heightNav, setHeightNav] = useState("p-[15px]");
 
@@ -27,6 +29,7 @@ function Navbar() {
     setToken(null);
     cart.numOfCartItems = 0;
     setTokenStatus(false);
+    setTokenWish(false);
   };
 
   return (
