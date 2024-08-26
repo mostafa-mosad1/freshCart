@@ -2,8 +2,9 @@ import { useState } from 'react';
 import { axiosBaseUrl } from './../../AxiosBaseUrl/AxiosBaseUrl';
 import { toast } from 'react-hot-toast';
 import { FloatingLabel } from 'flowbite-react';
-import { Button } from '@headlessui/react';
+;
 import { useNavigate } from 'react-router-dom';
+import Button from './../../Components/ui/Button';
 function VerifyResetCode() {
     const navgate =    useNavigate()
 

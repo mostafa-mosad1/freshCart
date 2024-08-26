@@ -209,3 +209,5 @@ function Navbar() {
 }
 
 export default Navbar;
+
+// git remote add origin https://github.com/mostafa-mosad1/freshCart.git

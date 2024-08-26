@@ -36,12 +36,13 @@ function Login() {
       localStorage.setItem("Token", data.token);
       navgate("/home");
       setToken(data.token);
+      getCart();
+      GetWishList();
       toast.success(data.message, {
         duration: 4000,
         position: "top-center",
       });
-      getCart();
-      GetWishList();
+     
     } catch (err) {
       console.log(err);
       toast.error(err?.response.data.message, {
@@ -61,12 +62,7 @@ function Login() {
     </div>
   ));
 
-  // useEffect(() => {
-  //   return () => {
-  //     console.log("login End now")
-  //     getCart()
-  //   };
-  // }, []);
+ 
 
   return (
     <>

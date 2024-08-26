@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from "react";
+import  { useEffect, useState } from "react";
 import Slider from "react-slick";
-import { axiosBaseURL } from "../../AxiosBaseUrl/AxiosBaseUrl";
+import { axiosBaseUrl } from './../../AxiosBaseUrl/AxiosBaseUrl';
 
 function Recomended({ id }) {
   const [recomende, setRecomended] = useState();
   const getRecomended = async () => {
-    const res = await axiosBaseURL.get(`/products?category=${id}`);
+    const res = await axiosBaseUrl.get(`/products?category=${id}`);
     setRecomended(res.data.data);
   };
 

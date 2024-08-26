@@ -5,6 +5,7 @@ import Slider from "react-slick";
 import { useContext } from "react";
 import { CartContext } from "../../Context/CartContextProvider";
 import SkeletonDetails from "./../../Skeleton/SkeletonDetails";
+import Recomended from './../../Components/Recomended/Recomended';
 
 function ProductDetails() {
   const { id } = useParams();
@@ -74,6 +75,7 @@ function ProductDetails() {
           </div>
         </div>
       )}
+      <Recomended id={"6428eb43dc1175abc65ca0b3"} />
     </>
   );
 }

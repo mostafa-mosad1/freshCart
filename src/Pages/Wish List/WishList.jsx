@@ -25,7 +25,8 @@ function WishList() {
                 speedMultiplier={1}
               />
             </div>
-          ) : (
+          ) : allWishLList.length != 0 &&
+          allWishLList != undefined ?(
             allWishLList?.map((element) => (
               <div
                 key={element.id}
@@ -66,7 +67,9 @@ function WishList() {
                 </div>
               </div>
             ))
-          )}
+          ):<h2 className="text-center text-2xl font-semibold my-20">
+          My wish List is empty
+        </h2>}
         </div>
       </div>
     </>
