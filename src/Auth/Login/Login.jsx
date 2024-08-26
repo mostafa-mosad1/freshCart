@@ -14,7 +14,7 @@ import { CartContext } from "./../../Context/CartContextProvider";
 import { WishListContext } from "../../Context/WishListContextProvider";
 function Login() {
   const { setToken } = useContext(TokenContext);
-  const { setTokenStatu } = useContext(WishListContext);
+  const { setTokenWish } = useContext(WishListContext);
 
   const { setTokenStatus } = useContext(CartContext);
 
@@ -44,7 +44,7 @@ function Login() {
       setToken(data.token);
       if(data.message =="success"){
         setTokenStatus(true);
-        setTokenStatu(true)
+        setTokenWish(true)
       }
      console.log(data)
       toast.success(data.message, {
@@ -81,6 +81,7 @@ function Login() {
         {allInputs}
         <div className="flex flex-col lg:flex-row lg:justify-between items-center">
           <Button
+          type={"button"}
             className={" hover:text-mainColor text-black w-full lg:w-fit "}
             name={"forget your password ?"}
             onClick={() => navgate("ForgetPassword")}

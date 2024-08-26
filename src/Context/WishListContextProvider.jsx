@@ -6,7 +6,7 @@ import toast from "react-hot-toast";
 export const WishListContext = createContext();
 
 function WishListContextProvider({ children }) {
-  const [tokenStatus, setTokenStatus] = useState(false);
+  const [tokenWish, setTokenWish] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [allWishLList, setAllWishList] = useState(null);
   const [allIdList, setAllIdList] = useState([]);
@@ -28,7 +28,7 @@ function WishListContextProvider({ children }) {
       setAllIdList(res.data.data);
       toast.success(res.data.message);
     } catch (err) {
-      toast.error(err.response.data.statusMsg.toUpperCase());
+      toast.error(err.response.data.WishMsg.toUpperCase());
       console.log(err);
     }
   };
@@ -62,17 +62,17 @@ function WishListContextProvider({ children }) {
   };
   useEffect(() => {
     if (localStorage.getItem("Token")) {
-      setTokenStatus(true);
+      setTokenWish(true);
     } else {
-      setTokenStatus(false);
+      setTokenWish(false);
       
     }
 
-    if (tokenStatus) {
+    if (tokenWish) {
       GetWishList();
     }
    
-  }, [tokenStatus]);
+  }, [tokenWish]);
   return (
     <WishListContext.Provider
       value={{
@@ -82,7 +82,7 @@ function WishListContextProvider({ children }) {
         allWishLList,
         allIdList,
         DeleteToWishList,
-        setTokenStatus
+        setTokenWish
       }}
     >
       {children}
