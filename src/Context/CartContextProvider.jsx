@@ -5,7 +5,7 @@ import toast from "react-hot-toast";
 export const CartContext = createContext();
 
 function CartContextProvider({ children }) {
-  const [tokenStatus, setTokenStatus] = useState(false);
+  const [tokenStatu, setTokenStatu] = useState(false);
   const headers = {
     token: localStorage.getItem("Token"),
   };
@@ -108,19 +108,19 @@ function CartContextProvider({ children }) {
 
   useEffect(() => {
     if (localStorage.getItem("Token")) {
-      setTokenStatus(true);
+      setTokenStatu(true);
     } else {
-      setTokenStatus(false);
+      setTokenStatu(false);
       
     }
 
-    if (tokenStatus) {
+    if (tokenStatu) {
       getCart();
     }
-  }, [tokenStatus]);
+  }, [tokenStatu]);
 
   
-  console.log(tokenStatus)
+  console.log(tokenStatu)
 
   return (
     <CartContext.Provider
@@ -131,7 +131,7 @@ function CartContextProvider({ children }) {
         getCart,
         isLoading,
         quantity,
-        setTokenStatus,
+        setTokenStatu,
         removeProduct,
         Checkout,
         clearCart,

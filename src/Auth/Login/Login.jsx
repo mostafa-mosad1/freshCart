@@ -14,7 +14,7 @@ import { CartContext } from "./../../Context/CartContextProvider";
 import { WishListContext } from "../../Context/WishListContextProvider";
 function Login() {
   const { setToken } = useContext(TokenContext);
-  const { GetWishList } = useContext(WishListContext);
+  const { setTokenStatu } = useContext(WishListContext);
 
   const { setTokenStatus } = useContext(CartContext);
 
@@ -43,7 +43,8 @@ function Login() {
       navgate("/home");
       setToken(data.token);
       if(data.message =="success"){
-        setTokenStatus(true)
+        setTokenStatus(true);
+        setTokenStatu(true)
       }
      console.log(data)
       toast.success(data.message, {
