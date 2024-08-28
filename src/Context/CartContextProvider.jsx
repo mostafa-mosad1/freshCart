@@ -5,7 +5,7 @@ import toast from "react-hot-toast";
 export const CartContext = createContext();
 
 function CartContextProvider({ children }) {
-  const [tokenStatu, setTokenStatu] = useState(false);
+  const [tokenStatus, setTokenStatus] = useState(false);
   const headers = {
     token: localStorage.getItem("Token"),
   };
@@ -67,7 +67,7 @@ function CartContextProvider({ children }) {
     try {
       setIsLoading(true);
       const res = await axiosBaseUrl.post(
-        `/orders/checkout-session/${cart.data._id}?url=http://localhost:5173`,
+        `/orders/checkout-session/${cart.data._id}?url=https://fresh-cart-five-delta.vercel.app`,
         {
           shippingAddress: data,
         },
@@ -108,19 +108,15 @@ function CartContextProvider({ children }) {
 
   useEffect(() => {
     if (localStorage.getItem("Token")) {
-      setTokenStatu(true);
+      setTokenStatus(true);
     } else {
-      setTokenStatu(false);
-      
+      setTokenStatus(false);
     }
 
-    if (tokenStatu) {
+    if (tokenStatus) {
       getCart();
     }
-  }, [tokenStatu]);
-
-  
-  console.log(tokenStatu)
+  }, [tokenStatus]);
 
   return (
     <CartContext.Provider
@@ -131,7 +127,7 @@ function CartContextProvider({ children }) {
         getCart,
         isLoading,
         quantity,
-        setTokenStatu,
+        setTokenStatus,
         removeProduct,
         Checkout,
         clearCart,

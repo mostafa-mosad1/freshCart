@@ -5,11 +5,13 @@ import Slider from "react-slick";
 import { useContext } from "react";
 import { CartContext } from "../../Context/CartContextProvider";
 import SkeletonDetails from "./../../Skeleton/SkeletonDetails";
-import Recomended from './../../Components/Recomended/Recomended';
+import { WishListContext } from './../../Context/WishListContextProvider';
 
 function ProductDetails() {
   const { id } = useParams();
   const { addToCart } = useContext(CartContext);
+  const { AddToWishList,allIdList } = useContext(WishListContext);
+
 
   const settings = {
     dots: true,
@@ -20,6 +22,7 @@ function ProductDetails() {
     arrows: false,
     autoplay: true,
   };
+  const status = allIdList.includes(id) ? "red" : "black";
 
   const { isLoading, data } = GetHook({
     queryKey: ["specificProduct"],
@@ -61,10 +64,19 @@ function ProductDetails() {
               <p className="text-2xl font-semibold">
                 {data?.data.data.price} EGP
               </p>
+             <div className=" flex  flex-wrap gap-4">
+             <i
+            style={{ color: status }}
+            onClick={() => {
+              AddToWishList(id);
+            }}
+            className="fa-solid fa-heart text-2xl  cursor-pointer"
+          ></i>
               <p className="flex items-center">
                 <i className="fa-solid fa-star-half-stroke text-rating_color text-xl"></i>
                 3.4
               </p>
+             </div>
             </div>
             <Button
               type={"submit"}
@@ -75,7 +87,7 @@ function ProductDetails() {
           </div>
         </div>
       )}
-      <Recomended id={"6428eb43dc1175abc65ca0b3"} />
+      
     </>
   );
 }

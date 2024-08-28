@@ -14,8 +14,8 @@ import { CartContext } from "./../../Context/CartContextProvider";
 import { WishListContext } from "../../Context/WishListContextProvider";
 function Login() {
   const { setToken } = useContext(TokenContext);
-  const { setTokenWish } = useContext(WishListContext);
 
+  const { setTokenWish } = useContext(WishListContext);
   const { setTokenStatus } = useContext(CartContext);
 
   const navgate = useNavigate();
@@ -26,7 +26,7 @@ function Login() {
       .required("Email is required"),
     password: yup
       .string()
-      .matches(/^[A-Z]{1}\w{5,15}$/, "Ex:(Ahmed123)")
+      // .matches(/^[A-Z]{1}\w{5,15}$/, "Ex:(Ahmed123)")
       .required("Password is required"),
   });
 
