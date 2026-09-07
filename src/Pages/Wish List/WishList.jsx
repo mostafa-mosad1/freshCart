@@ -86,7 +86,7 @@ function WishList() {
               {/* Move to Cart */}
               <div className="mt-5 pt-4 border-t border-slate-100">
                 <Button
-                  onClick={() => addToCart(element.id || element._id)}
+                  onClick={() => addToCart(element.id || element._id, element)}
                   isLoading={isCartLoading}
                   className="w-full bg-emerald-500 hover:bg-emerald-600 text-white py-2.5 rounded-xl font-semibold text-xs flex items-center justify-center gap-2 shadow-sm shadow-emerald-500/10"
                 >

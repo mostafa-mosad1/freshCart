@@ -4,6 +4,8 @@ import Button from "../../Components/ui/Button";
 import { useNavigate, Link } from "react-router-dom";
 import { Trash2, Plus, Minus, ShoppingBag, ArrowRight, ShieldCheck, Loader2, Sparkles } from "lucide-react";
 
+import toast from "react-hot-toast";
+
 function Cart() {
   const navigate = useNavigate();
   const { cart, getCart, isLoading, quantity, removeProduct, clearCart } = useContext(CartContext);
@@ -11,6 +13,19 @@ function Cart() {
   useEffect(() => {
     getCart();
   }, []);
+
+  const handleProceedToCheckout = () => {
+    const token = localStorage.getItem("Token");
+    if (!token) {
+      toast.error("Please sign in to proceed with checkout and place your order", {
+        icon: "🔒",
+        duration: 3500,
+      });
+      navigate("/login");
+      return;
+    }
+    navigate("/checkout");
+  };
 
   const products = cart?.data?.products || [];
   const totalCartPrice = cart?.data?.totalCartPrice || 0;
@@ -159,7 +174,7 @@ function Cart() {
             </div>
 
             <Button
-              onClick={() => navigate("/checkout")}
+              onClick={handleProceedToCheckout}
               className="bg-emerald-500 hover:bg-emerald-600 text-white w-full py-3.5 rounded-2xl font-bold shadow-lg shadow-emerald-500/20 text-sm flex items-center justify-center gap-2"
             >
               <span>Proceed to Checkout</span>

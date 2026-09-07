@@ -19,9 +19,9 @@ function ProductDetails() {
   const toggleWishlist = () => {
     if (isFavorite) {
       if (DeleteToWishList) DeleteToWishList(id);
-      else AddToWishList(id);
+      else AddToWishList(id, product);
     } else {
-      AddToWishList(id);
+      AddToWishList(id, product);
     }
   };
 
@@ -163,7 +163,7 @@ function ProductDetails() {
               <Button
                 type="button"
                 isLoading={isCartLoading}
-                onClick={() => addToCart(id)}
+                onClick={() => addToCart(id, product)}
                 className="bg-emerald-500 hover:bg-emerald-600 text-white flex-1 py-3.5 rounded-2xl font-bold shadow-lg shadow-emerald-500/20 text-sm flex items-center justify-center gap-2"
               >
                 <ShoppingCart className="w-5 h-5" />

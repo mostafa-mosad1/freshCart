@@ -36,59 +36,32 @@ const Routers = createBrowserRouter([
     path: "",
     element: <LayOut />,
     children: [
-      {
-        path: "home",
-        element: (
-          <ProtectedRouters>
-            <Home />
-          </ProtectedRouters>
-        ),
-      },
-      {
-        path: "cart",
-        element: (
-          <ProtectedRouters>
-            <Cart />
-          </ProtectedRouters>
-        ),
-      },
-      {
-        path: "WishList",
-        element: (
-          <ProtectedRouters>
-            <WishList />
-          </ProtectedRouters>
-        ),
-      },
-      {
-        path: "product",
-        element: (
-          <ProtectedRouters>
-            <Product />
-          </ProtectedRouters>
-        ),
-      },
-      {
-        path: "categoies",
-        element: (
-          <ProtectedRouters>
-            <Categories />
-          </ProtectedRouters>
-        ),
-      },
-      {
-        path: "brand",
-        element: (
-          <ProtectedRouters>
-            <Brand />
-          </ProtectedRouters>
-        ),
-      },
-      { index: true, element: <Login /> },
+      { index: true, element: <Home /> },
+      { path: "home", element: <Home /> },
+      { path: "cart", element: <Cart /> },
+      { path: "WishList", element: <WishList /> },
+      { path: "product", element: <Product /> },
+      { path: "categoies", element: <Categories /> },
+      { path: "brand", element: <Brand /> },
+      { path: "login", element: <Login /> },
       { path: "register", element: <Register /> },
       { path: "productDetails/:id", element: <ProductDetails /> },
-      { path: "checkout", element: <CheckOut /> },
-      { path: "allorders", element: <AllOrders /> },
+      {
+        path: "checkout",
+        element: (
+          <ProtectedRouters>
+            <CheckOut />
+          </ProtectedRouters>
+        ),
+      },
+      {
+        path: "allorders",
+        element: (
+          <ProtectedRouters>
+            <AllOrders />
+          </ProtectedRouters>
+        ),
+      },
       { path: "ForgetPassword", element: <ForgetPassword /> },
       { path: "verifyResetCode", element: <VerifyResetCode /> },
       { path: "restNewPassword", element: <RestNewPassword /> },

@@ -13,19 +13,30 @@ function CardProduct({ img, title, category, price, id, ratingsAverage = 4.8 }) 
 
   const isFavorite = allIdList?.includes(id);
 
+  const productData = {
+    id,
+    _id: id,
+    title,
+    price,
+    img,
+    imageCover: img,
+    category,
+    ratingsAverage,
+  };
+
   const toggleWishlist = (e) => {
     e.stopPropagation();
     if (isFavorite) {
       if (DeleteToWishList) DeleteToWishList(id);
-      else AddToWishList(id);
+      else AddToWishList(id, productData);
     } else {
-      AddToWishList(id);
+      AddToWishList(id, productData);
     }
   };
 
   const handleAddToCart = (e) => {
     e.stopPropagation();
-    addToCart(id);
+    addToCart(id, productData);
   };
 
   return (
