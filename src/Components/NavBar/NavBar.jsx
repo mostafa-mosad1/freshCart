@@ -1,219 +1,217 @@
 import { Link, NavLink, useNavigate } from "react-router-dom";
-import { useContext, useState } from "react";
+import { useContext, useState, useEffect } from "react";
 import logo from "../../assets/images/freshcart-logo.svg";
 import { TokenContext } from "../../Context/TokenContext";
-import { ShoppingCart } from "lucide-react";
+import { ShoppingBag, Heart, LogOut, Menu, X, User, ShoppingCart } from "lucide-react";
 import { CartContext } from "../../Context/CartContextProvider";
-import { WishListContext } from './../../Context/WishListContextProvider';
-function Navbar() {
-  const navgate = useNavigate();
-  const { token, setToken } = useContext(TokenContext);
-  const { cart, setTokenStatus } = useContext(CartContext);
-  const { setTokenWish } = useContext(WishListContext);
-  let [open, setOpen] = useState(false);
-  let [heightNav, setHeightNav] = useState("p-[15px]");
+import { WishListContext } from "../../Context/WishListContextProvider";
 
-  (function nav() {
-    window.addEventListener("scroll", () => {
-      if (window.scrollY > 100) {
-        setHeightNav("p-[2px]");
-      } else {
-        setHeightNav("p-[15px]");
-      }
-    });
-  })();
+function Navbar() {
+  const navigate = useNavigate();
+  const { token, setToken } = useContext(TokenContext);
+  const { cart, setTokenStatus, setCart } = useContext(CartContext);
+  const { setTokenWish, allIdList } = useContext(WishListContext);
+  const [open, setOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 20);
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   const Logout = () => {
     localStorage.removeItem("Token");
-    navgate("/");
     setToken(null);
-    cart.numOfCartItems = 0;
+    if (setCart) setCart(null);
     setTokenStatus(false);
     setTokenWish(false);
+    navigate("/");
+    setOpen(false);
   };
 
+  const navLinks = [
+    { name: "Home", path: "/home" },
+    { name: "Products", path: "/product" },
+    { name: "Categories", path: "/categoies" },
+    { name: "Brands", path: "/brand" },
+    { name: "Wishlist", path: "/WishList" },
+  ];
+
   return (
-    <div className=" w-full bg-gray-200 sticky top-0 left-0 z-[1000] ">
-      <div className={`container mx-auto  duration-[1s] ${heightNav}   ] `}>
-        <div className="pc hidden lg:flex  flex-col lg:flex-row justify-between items-center text-black/50 p-4">
-          <div className="flex space-x-2 items-center">
-            <img src={logo} alt="logo" />
-            {token && (
-              <ul className=" text-xl space-x-4 font-semibold hidden lg:block">
-                <NavLink to={"home"}>Home</NavLink>
-                <NavLink to={"WishList"}>Favourite</NavLink>
-                <NavLink to={"product"}>Products</NavLink>
-                <NavLink to={"categoies"}>Categoies</NavLink>
-                <NavLink to={"brand"}>Brand</NavLink>
-              </ul>
-            )}
-          </div>
+    <header
+      className={`sticky top-0 z-50 w-full transition-all duration-300 ${
+        isScrolled
+          ? "bg-white/90 backdrop-blur-md shadow-sm py-2.5 border-b border-slate-100"
+          : "bg-white/95 backdrop-blur-sm py-3.5 border-b border-slate-100/70"
+      }`}
+    >
+      <div className="container mx-auto flex items-center justify-between">
+        {/* Left Side: Logo & Main Nav */}
+        <div className="flex items-center gap-8">
+          <Link to={token ? "/home" : "/"} className="flex items-center gap-2 group">
+            <img
+              src={logo}
+              alt="FreshCart Logo"
+              className="h-8 md:h-9 w-auto object-contain transition-transform duration-300 group-hover:scale-105"
+            />
+          </Link>
 
-          <ul className=" lg:flex flex-row  hidden ">
-            <div className="icons text-black flex space-x-2 text-lg">
-              {token && (
-                <Link to={"cart"}>
-                  <li className="mx-4 text-xl font-semibold text-mainColor relative">
-                    <p className="text-3xl font-semibold text-red-500 absolute -top-6 -right-2">
-                      {cart?.numOfCartItems}
-                    </p>
-                    <ShoppingCart className="text-4xl size-8" />
-                  </li>
-                </Link>
-              )}
-              <li>
-                <i className="fa-brands fa-facebook"></i>
-              </li>
-              <li>
-                <i className="fa-brands fa-twitter"></i>
-              </li>
-              <li>
-                <i className="fa-brands fa-linkedin-in"></i>
-              </li>
-              <li>
-                <i className="fa-brands fa-youtube"></i>
-              </li>
-              <li>
-                <i className="fa-brands fa-tiktok"></i>
-              </li>
-              <li>
-                <i className="fa-brands fa-instagram"></i>
-              </li>
-            </div>
-            {!token && (
-              <>
-                <li>
-                  <NavLink
-                    className={"text-xl font-semibold ps-2"}
-                    to={""}
-                    onClick={() => {
-                      console.log("login");
-                    }}
-                  >
-                    login
-                  </NavLink>
-                </li>
-                <li>
-                  <NavLink
-                    className={"text-xl font-semibold ps-2"}
-                    to={"register"}
-                    onClick={() => {
-                      console.log("Rgister");
-                    }}
-                  >
-                    Rgister
-                  </NavLink>
-                </li>
-              </>
-            )}
-            {token && (
-              <li className="p-1">
-                <span
-                  className={"text-xl font-semibold ps-2 cursor-pointer"}
-                  onClick={() => {
-                    console.log("LogOut");
-                    Logout();
-                  }}
+          {token && (
+            <nav className="hidden lg:flex items-center gap-1.5">
+              {navLinks.map((link) => (
+                <NavLink
+                  key={link.path}
+                  to={link.path}
+                  className={({ isActive }) =>
+                    isActive
+                      ? "text-emerald-600 font-semibold bg-emerald-50 px-3.5 py-1.5 rounded-xl border border-emerald-100 transition-all text-sm"
+                      : "text-slate-600 hover:text-emerald-600 font-medium px-3.5 py-1.5 rounded-xl hover:bg-slate-50 transition-all text-sm"
+                  }
                 >
-                  LogOut
-                </span>
-              </li>
-            )}
-          </ul>
-        </div>
-
-        <div className="mobile lg:hidden  text-black/50 p-4">
-          <div className="flex justify-between items-center">
-            <img src={logo} alt="logo" />
-            <div className=" flex items-center justify-center mx-2">
-              <Link to={"cart"}>
-                <li className=" flex mx-4 font-semibold text-mainColor relative">
-                  <ShoppingCart />
-                  <p className=" absolute -top-4 text-xl -right-2 text-red-500 ">
-                    {cart?.numOfCartItems}
-                  </p>
-                </li>
-              </Link>
-              <i
-                onClick={() => setOpen(!open)}
-                className="fa-solid fa-bars"
-              ></i>
-            </div>
-          </div>
-
-          {open && (
-            <div className="flex flex-col justify-center items-center duration-[2s]">
-              {token && (
-                <ul className="flex flex-col text-xl  font-semibold ">
-                  <NavLink to={"home"}>Home</NavLink>
-                  <NavLink to={"WishList"}>Favourite</NavLink>
-                  <NavLink to={"product"}>Products</NavLink>
-                  <NavLink to={"categoies"}>Categoies</NavLink>
-                  <NavLink to={"brand"}>Brand</NavLink>
-                </ul>
-              )}
-              <div className="icons text-black flex space-x-2 my-2 text-lg">
-                <i className="fa-brands fa-facebook"></i>
-
-                <i className="fa-brands fa-twitter"></i>
-
-                <i className="fa-brands fa-linkedin-in"></i>
-
-                <i className="fa-brands fa-youtube"></i>
-
-                <i className="fa-brands fa-tiktok"></i>
-
-                <i className="fa-brands fa-instagram"></i>
-              </div>
-              <ul className="  ">
-                {!token && (
-                  <>
-                    <li>
-                      <NavLink
-                        className={"text-xl font-semibold ps-2"}
-                        to={""}
-                        onClick={() => {
-                          console.log("login");
-                        }}
-                      >
-                        Login
-                      </NavLink>
-                    </li>
-                    <li>
-                      <NavLink
-                        className={"text-xl font-semibold ps-2"}
-                        to={"register"}
-                        onClick={() => {
-                          console.log("Rgister");
-                        }}
-                      >
-                        Rgister
-                      </NavLink>
-                    </li>
-                  </>
-                )}
-                {token && (
-                  <li className="p-1 cursor-pointer">
-                    <p
-                      className={"text-xl font-semibold ps-1"}
-                      onClick={() => {
-                        Logout();
-                        console.log("LogOut");
-                      }}
-                    >
-                      LogOut
-                    </p>
-                  </li>
-                )}
-              </ul>
-            </div>
+                  {link.name}
+                </NavLink>
+              ))}
+            </nav>
           )}
         </div>
+
+        {/* Right Side: Icons & Auth Actions */}
+        <div className="flex items-center gap-3 md:gap-4">
+          {token ? (
+            <>
+              {/* Wishlist Link */}
+              <Link
+                to="/WishList"
+                className="relative p-2 text-slate-600 hover:text-rose-500 hover:bg-rose-50 rounded-xl transition-all duration-200"
+                title="Wishlist"
+              >
+                <Heart className="w-5 h-5" />
+                {allIdList && allIdList.length > 0 && (
+                  <span className="absolute -top-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full bg-rose-500 text-[10px] font-bold text-white shadow-sm ring-2 ring-white animate-pulse">
+                    {allIdList.length}
+                  </span>
+                )}
+              </Link>
+
+              {/* Cart Link */}
+              <Link
+                to="/cart"
+                className="relative flex items-center gap-2 bg-emerald-500 hover:bg-emerald-600 text-white px-3.5 py-1.5 rounded-xl transition-all duration-200 shadow-sm shadow-emerald-500/20 active:scale-95"
+              >
+                <ShoppingCart className="w-4 h-4" />
+                <span className="text-xs font-bold hidden sm:inline">Cart</span>
+                <span className="flex h-5 min-w-5 px-1 items-center justify-center rounded-full bg-white text-[11px] font-bold text-emerald-700">
+                  {cart?.numOfCartItems || 0}
+                </span>
+              </Link>
+
+              {/* Logout Button (Desktop) */}
+              <button
+                onClick={Logout}
+                className="hidden lg:flex items-center gap-1.5 text-slate-500 hover:text-rose-600 font-medium text-sm px-3 py-1.5 rounded-xl hover:bg-rose-50/80 transition-all border border-transparent hover:border-rose-100"
+                title="Log Out"
+              >
+                <LogOut className="w-4 h-4" />
+                <span>Logout</span>
+              </button>
+            </>
+          ) : (
+            <div className="hidden lg:flex items-center gap-2">
+              <NavLink
+                to="/"
+                className={({ isActive }) =>
+                  isActive
+                    ? "text-emerald-600 font-semibold px-4 py-1.5 rounded-xl bg-emerald-50 border border-emerald-100 text-sm"
+                    : "text-slate-600 hover:text-emerald-600 font-medium px-4 py-1.5 rounded-xl hover:bg-slate-50 text-sm transition-all"
+                }
+              >
+                Sign In
+              </NavLink>
+              <NavLink
+                to="/register"
+                className="bg-emerald-500 hover:bg-emerald-600 text-white font-medium text-sm px-4 py-2 rounded-xl shadow-sm transition-all active:scale-95"
+              >
+                Register
+              </NavLink>
+            </div>
+          )}
+
+          {/* Mobile Menu Toggle Button */}
+          <button
+            onClick={() => setOpen(!open)}
+            className="lg:hidden p-2 text-slate-600 hover:text-slate-900 rounded-xl hover:bg-slate-100 transition-all"
+            aria-label="Toggle Navigation"
+          >
+            {open ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+          </button>
+        </div>
       </div>
-    </div>
+
+      {/* Mobile Menu Dropdown */}
+      {open && (
+        <div className="lg:hidden bg-white/95 backdrop-blur-md border-b border-slate-200/80 px-4 py-5 shadow-lg animate-in slide-in-from-top-2 duration-200">
+          <div className="flex flex-col gap-2">
+            {token ? (
+              <>
+                {navLinks.map((link) => (
+                  <NavLink
+                    key={link.path}
+                    to={link.path}
+                    onClick={() => setOpen(false)}
+                    className={({ isActive }) =>
+                      isActive
+                        ? "text-emerald-600 font-semibold bg-emerald-50 px-4 py-2.5 rounded-xl border border-emerald-100 text-sm"
+                        : "text-slate-700 hover:text-emerald-600 font-medium px-4 py-2.5 rounded-xl hover:bg-slate-50 text-sm transition-all"
+                    }
+                  >
+                    {link.name}
+                  </NavLink>
+                ))}
+                <div className="pt-3 mt-2 border-t border-slate-100 flex flex-col gap-2">
+                  <NavLink
+                    to="/allorders"
+                    onClick={() => setOpen(false)}
+                    className="flex items-center gap-2 text-slate-700 font-medium px-4 py-2 rounded-xl hover:bg-slate-50 text-sm"
+                  >
+                    <ShoppingBag className="w-4 h-4 text-emerald-600" />
+                    <span>My Orders</span>
+                  </NavLink>
+                  <button
+                    onClick={Logout}
+                    className="flex items-center gap-2 text-rose-600 font-medium px-4 py-2.5 rounded-xl bg-rose-50 hover:bg-rose-100 text-sm transition-all text-left"
+                  >
+                    <LogOut className="w-4 h-4" />
+                    <span>Log Out</span>
+                  </button>
+                </div>
+              </>
+            ) : (
+              <div className="flex flex-col gap-2 pt-2">
+                <NavLink
+                  to="/"
+                  onClick={() => setOpen(false)}
+                  className="text-center text-slate-700 font-semibold py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-sm"
+                >
+                  Sign In
+                </NavLink>
+                <NavLink
+                  to="/register"
+                  onClick={() => setOpen(false)}
+                  className="text-center bg-emerald-500 text-white font-semibold py-2.5 rounded-xl hover:bg-emerald-600 text-sm shadow-sm"
+                >
+                  Create Account
+                </NavLink>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
+    </header>
   );
 }
 
 export default Navbar;
 
-// git remote add origin https://github.com/mostafa-mosad1/freshCart.git

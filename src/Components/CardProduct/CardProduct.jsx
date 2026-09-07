@@ -1,62 +1,107 @@
 /* eslint-disable react/prop-types */
 import { useNavigate } from "react-router-dom";
-import Button from "./../../Components/ui/Button";
 import { useContext } from "react";
 import { CartContext } from "../../Context/CartContextProvider";
 import { WishListContext } from "../../Context/WishListContextProvider";
-function CardProduct({ img, title, category, price, id }) {
+import { Heart, Star, ShoppingCart } from "lucide-react";
+import Button from "../ui/Button";
+
+function CardProduct({ img, title, category, price, id, ratingsAverage = 4.8 }) {
   const navigate = useNavigate();
   const { addToCart, isLoading } = useContext(CartContext);
-  const { AddToWishList, allIdList } = useContext(WishListContext);
+  const { AddToWishList, allIdList, DeleteToWishList } = useContext(WishListContext);
 
-  const status = allIdList.includes(id) ? "red" : "black";
+  const isFavorite = allIdList?.includes(id);
+
+  const toggleWishlist = (e) => {
+    e.stopPropagation();
+    if (isFavorite) {
+      if (DeleteToWishList) DeleteToWishList(id);
+      else AddToWishList(id);
+    } else {
+      AddToWishList(id);
+    }
+  };
+
+  const handleAddToCart = (e) => {
+    e.stopPropagation();
+    addToCart(id);
+  };
 
   return (
-    <>
-      <div className=" mx-2 pb-8   mb-5 relative group overflow-hidden cursor-pointer hover:shadow-cardShadow  duration-500 ">
-        <div
-          onClick={() => {
-            console.log("card");
-            navigate(`/ProductDetails/${id}`);
-          }}
+    <div
+      onClick={() => navigate(`/productDetails/${id}`)}
+      className="group relative flex flex-col justify-between bg-white rounded-3xl p-4 border border-slate-100 shadow-sm hover:shadow-xl hover:border-emerald-100/80 hover:-translate-y-1.5 transition-all duration-300 cursor-pointer overflow-hidden"
+    >
+      {/* Top Image Container */}
+      <div className="relative aspect-square w-full overflow-hidden rounded-2xl bg-slate-50 mb-3 flex items-center justify-center">
+        <img
+          src={img}
+          alt={title}
+          className="h-full w-full object-contain p-2 group-hover:scale-105 transition-transform duration-500 ease-out"
+          loading="lazy"
+        />
+
+        {/* Category Badge */}
+        {category && (
+          <span className="absolute top-3 left-3 bg-white/90 backdrop-blur-md px-2.5 py-1 rounded-full text-[11px] font-semibold text-emerald-700 shadow-xs border border-white/60">
+            {category}
+          </span>
+        )}
+
+        {/* Wishlist Floating Button */}
+        <button
+          onClick={toggleWishlist}
+          aria-label="Add to wishlist"
+          className={`absolute top-3 right-3 p-2 rounded-full transition-all duration-300 shadow-sm backdrop-blur-md ${
+            isFavorite
+              ? "bg-rose-50 text-rose-500 scale-110 shadow-rose-100"
+              : "bg-white/90 text-slate-400 hover:text-rose-500 hover:bg-white"
+          }`}
         >
-          <img src={img} className="w-full" alt="log" />
-          <div className="px-2 space-y-2">
-            <h2 className="text-main_color font-semibold text-lg">
-              {category}
-            </h2>
-            <h2 className=" line-clamp-1 text-xl  font-bold">{title}</h2>
-            <div className=" flex justify-between">
-              <p>{price} EGP</p>
-              <p className="flex items-center">
-                <i className="fa-solid fa-star-half-stroke text-rating_color text-xl"></i>
-                3.4
-              </p>
+          <Heart className={`w-4 h-4 ${isFavorite ? "fill-rose-500 text-rose-500" : ""}`} />
+        </button>
+      </div>
+
+      {/* Content Section */}
+      <div className="flex flex-col flex-1 justify-between">
+        <div>
+          <h3
+            title={title}
+            className="font-semibold text-slate-800 text-sm line-clamp-1 group-hover:text-emerald-600 transition-colors"
+          >
+            {title}
+          </h3>
+
+          <div className="flex items-center justify-between mt-2.5">
+            <div className="flex items-baseline gap-1">
+              <span className="text-lg font-bold text-slate-900">{price}</span>
+              <span className="text-xs font-semibold text-emerald-600">EGP</span>
+            </div>
+
+            <div className="flex items-center gap-1 bg-amber-50 px-2 py-0.5 rounded-lg border border-amber-100/60">
+              <Star className="w-3.5 h-3.5 text-amber-500 fill-amber-400" />
+              <span className="text-xs font-bold text-amber-800">{ratingsAverage}</span>
             </div>
           </div>
         </div>
-        <div className=" relative mx-2 mt-4 text-center ">
-          <Button
-            isLoading={isLoading}
-            type={"submit"}
-            name="Add to Cart"
-            className="bg-mainColor w-[80%]  relative -bottom-28 group-hover:bottom-0 duration-1000   text-white  "
-            onClick={() => {
-              addToCart(id);
-            }}
-          />
 
-          <i
-            style={{ color: status }}
-            onClick={() => {
-              AddToWishList(id);
-            }}
-            className="fa-solid fa-heart text-4xl  absolute bottom-0 right-0 "
-          ></i>
+        {/* Add to Cart CTA */}
+        <div className="mt-4 pt-3 border-t border-slate-100/80">
+          <Button
+            type="button"
+            isLoading={isLoading}
+            onClick={handleAddToCart}
+            className="bg-emerald-500 hover:bg-emerald-600 text-white w-full py-2.5 px-3 rounded-xl shadow-sm shadow-emerald-500/10 text-xs font-bold flex items-center justify-center gap-1.5"
+          >
+            <ShoppingCart className="w-4 h-4" />
+            <span>Add to Cart</span>
+          </Button>
         </div>
       </div>
-    </>
+    </div>
   );
 }
 
 export default CardProduct;
+

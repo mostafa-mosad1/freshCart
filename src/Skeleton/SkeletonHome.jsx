@@ -1,57 +1,19 @@
 function SkeletonHome() {
   return (
-    <>
-      <div
-        role="status"
-        className="w-64 p-4   rounded shadow animate-pulse  "
-      >
-        <div className="flex items-center justify-center h-48 mb-4 bg-gray-300 rounded dark:bg-gray-700">
-          <svg
-            className="w-10 h-10 text-gray-200 dark:text-gray-600"
-            aria-hidden="true"
-            xmlns="http://www.w3.org/2000/svg"
-            fill="currentColor"
-            viewBox="0 0 16 20"
-          >
-            <path d="M14.066 0H7v5a2 2 0 0 1-2 2H0v11a1.97 1.97 0 0 0 1.934 2h12.132A1.97 1.97 0 0 0 16 18V2a1.97 1.97 0 0 0-1.934-2ZM10.5 6a1.5 1.5 0 1 1 0 2.999A1.5 1.5 0 0 1 10.5 6Zm2.221 10.515a1 1 0 0 1-.858.485h-8a1 1 0 0 1-.9-1.43L5.6 10.039a.978.978 0 0 1 .936-.57 1 1 0 0 1 .9.632l1.181 2.981.541-1a.945.945 0 0 1 .883-.522 1 1 0 0 1 .879.529l1.832 3.438a1 1 0 0 1-.031.988Z" />
-            <path d="M5 5V.13a2.96 2.96 0 0 0-1.293.749L.879 3.707A2.98 2.98 0 0 0 .13 5H5Z" />
-          </svg>
+    <div className="bg-white rounded-3xl p-4 border border-slate-100 shadow-sm animate-pulse flex flex-col justify-between h-[360px]">
+      <div>
+        <div className="aspect-square w-full rounded-2xl bg-slate-100 mb-4 animate-shimmer" />
+        <div className="h-3 w-16 bg-slate-100 rounded-full mb-2" />
+        <div className="h-4 w-3/4 bg-slate-100 rounded-lg mb-2" />
+        <div className="flex justify-between items-center mt-3">
+          <div className="h-5 w-20 bg-slate-100 rounded-lg" />
+          <div className="h-4 w-12 bg-slate-100 rounded-lg" />
         </div>
-        <div className=" flex flex-col justify-start space-y-2">
-          <div className="h-10 bg-gray-300 rounded-md dark:bg-gray-700 w-32"></div>
-          <div className="h-10 bg-gray-300 rounded-md dark:bg-gray-700 w-32"></div>
-        </div>
-        <div className=" flex justify-between mt-4">
-          <div className="h-10 bg-gray-300 rounded-md dark:bg-gray-700 w-14"></div>
-          <div className="h-10 bg-gray-300 rounded-md dark:bg-gray-700 w-14"></div>
-        </div>
-
-        <span className="sr-only">Loading...</span>
       </div>
-    </>
+      <div className="h-10 w-full bg-slate-100 rounded-xl mt-4" />
+    </div>
   );
 }
 
 export default SkeletonHome;
 
-// function SkeletonListsTodos() {
-//   return (
-//     <>
-//       <div className=" flex flex-col w-fit  justify-between space-y-4">
-//         <div>
-//           <div className="h-60 bg-gray-300 rounded-md dark:bg-gray-600 w-48 mb-2.5"></div>
-//         </div>
-//         <div className=" flex flex-col justify-start space-y-2">
-//           <div className="h-10 bg-gray-300 rounded-md dark:bg-gray-700 w-32"></div>
-//           <div className="h-10 bg-gray-300 rounded-md dark:bg-gray-700 w-32"></div>
-//         </div>
-//         <div className=" flex justify-between">
-//           <div className="h-10 bg-gray-300 rounded-md dark:bg-gray-700 w-14"></div>
-//           <div className="h-10 bg-gray-300 rounded-md dark:bg-gray-700 w-14"></div>
-//         </div>
-//       </div>
-//     </>
-//   );
-// }
-
-// export default SkeletonListsTodos;
